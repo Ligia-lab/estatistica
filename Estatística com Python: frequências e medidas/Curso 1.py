@@ -1,7 +1,5 @@
 #%%
 
-
-
 import pandas as pd
 import numpy as np
 import seaborn as sns
@@ -10,15 +8,6 @@ import scipy
 # %%
 
 #CONHECENDO OS DADOS
-
-import zipfile
-
-nome_arquivo_zip = 'Curso_de_Estatistica.zip'
-
-with zipfile.ZipFile(nome_arquivo_zip, 'r') as zip_ref:
-    zip_ref.extractall()
-    
-# %%
 
 dados = pd.read_csv('Curso de Estatística/dados.csv')
 dados.head()
@@ -227,6 +216,7 @@ dist_freq_quantitativas_personalizadas.sort_index(ascending=False)
 # %%
 
 #2.3 Distribuição de frequências para variáveis quantitativas (classes de amplitude fixa)
+
 #Passo 1 - Difinindo o número de classes
 
 #Regra de Sturges
@@ -234,4 +224,89 @@ dist_freq_quantitativas_personalizadas.sort_index(ascending=False)
 n = dados.shape[0]
 k = 1 + (10/3) * np.log10(n)
 k
+
 # %%
+
+k = int(k.round(0))
+k
+
+# %%
+
+#Passo 2 - Criar a tabela de frequências
+
+pd.value_counts(
+    pd.cut(
+        x=dados.Renda,
+        bins=17,
+        include_lowest=True
+    ), sort=False
+)
+
+# %%
+
+frequencia = pd.value_counts(
+                pd.cut(
+                        x=dados.Renda,
+                        bins=17,
+                        include_lowest=True
+                ), sort=False
+             )
+
+percentual = pd.value_counts(
+                pd.cut(
+                        x=dados.Renda,
+                        bins=17,
+                        include_lowest=True
+                ), sort=False,
+                normalize=True 
+             ) * 100
+
+# %%
+
+frequencia
+
+# %%
+
+percentual
+
+# %%
+
+dist_freq_quantitativas_amplitude_fixa = pd.DataFrame(
+    {'Frequência' : frequencia, 'Porcentagem (%)': percentual}
+)
+dist_freq_quantitativas_amplitude_fixa
+
+# %%
+
+#2.4 Histograma
+
+ax = sns.distplot(dados.Altura, kde=False)
+
+ax.figure.set_size_inches(12,6)
+ax.set_title('Distribuição de frequências - Altura', fontsize=18)
+ax.set_xlabel('Metros', fontsize=14)
+ax
+
+# %%
+
+ax = sns.distplot(dados.Altura)
+
+ax.figure.set_size_inches(12,6)
+ax.set_title('Distribuição de frequências - Altura - KDE', fontsize=18)
+ax.set_xlabel('Metros', fontsize=14)
+ax
+
+# %%
+
+dados.Altura.hist(bins = 50, figsize=(12,6))
+
+# %%
+
+dist_freq_quantitativas_personalizadas['Frequência'].plot.bar(width = 1, color = 'blue', alpha = 0.2, figsize = (12, 6))
+
+# %%
+
+# 3 MEDIDAS DE TENDÊNCIA CENTRAL
+
+#3.1 Média aritmética
+
