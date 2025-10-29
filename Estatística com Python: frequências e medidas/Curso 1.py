@@ -1,4 +1,4 @@
-#%%
+ #%%
 
 import pandas as pd
 import numpy as np
@@ -308,5 +308,351 @@ dist_freq_quantitativas_personalizadas['Frequência'].plot.bar(width = 1, color 
 
 # 3 MEDIDAS DE TENDÊNCIA CENTRAL
 
-#3.1 Média aritmética
+# DataFrame Exemplo
+
+df = pd.DataFrame(data = {'Fulano': [8, 10, 4, 8, 6, 10, 8],
+                          'Beltrano': [10, 2, 0.5, 1, 3, 9.5, 10],
+                          'Sicrano': [7.5, 8, 7, 8, 8, 8.5, 7]},
+                 index = ['Matemática',
+                          'Português',
+                          'Inglês',
+                          'Geografia',
+                          'História',
+                          'Física',
+                          'Química'])
+df.rename_axis('Matérias', axis = 'columns', inplace = True)
+df
+
+#%%
+
+# 3.1 Média aritmética
+
+df['Fulano'].mean()
+
+# %%
+
+dados.Renda.mean()
+
+# %%
+
+dados.groupby(['Sexo'])['Renda'].mean()
+
+# %%
+
+# 3.2 Mediana
+
+notas_fulano = df.Fulano
+notas_fulano
+
+# %%
+
+notas_fulano = notas_fulano.sort_values()
+notas_fulano
+
+# %%
+
+notas_fulano = notas_fulano.reset_index()
+notas_fulano
+
+# %%
+
+n = notas_fulano.shape[0]
+n
+
+# %%
+
+elemento_md = (n + 1) / 2
+elemento_md
+
+# %%
+
+notas_fulano.loc[elemento_md - 1]
+
+# %%
+
+notas_fulano['Fulano'] = pd.to_numeric(notas_fulano['Fulano'], errors='coerce')
+
+# %%
+
+notas_fulano['Fulano'].median()
+
+# %%
+
+notas_beltrano = df.Beltrano.sample(6, random_state=101)
+notas_beltrano
+
+# %%
+
+notas_beltrano.median()
+
+# %%
+
+dados.Renda.median()
+
+# %%
+
+dados.Renda.quantile()
+
+# %%
+
+# 3.3 Moda
+
+df
+
+# %%
+
+df.mode()
+
+# %%
+
+dados.Renda.mode()
+
+# %%
+
+dados.Altura.mode()
+
+# %%
+
+# 3.4 Relação entre Média, Mediana e Moda
+
+ax = sns.displot(dados.query('Renda < 20000').Renda)
+ax.figure.set_size_inches(12, 6)
+ax
+
+# %%
+
+Moda = dados.Renda.mode()[0]
+Moda
+
+# %%
+
+Mediana = dados.Renda.median()
+Mediana
+
+# %%
+
+Media = dados.Renda.mean()
+Media
+
+# %%
+
+Moda < Mediana < Media
+
+# %%
+
+ax = sns.displot(dados.Altura)
+ax.figure.set_size_inches(12, 6)
+ax 
+
+# %%
+
+Moda = dados.Altura.mode()
+Moda
+
+# %%
+
+Mediana = dados.Altura.median()
+Mediana
+
+# %%
+
+Media = dados.Altura.mean()
+Media
+
+# %%
+
+ax = sns.displot(dados['Anos de Estudo'], bins=17)
+ax.figure.set_size_inches(12, 6)
+ax 
+
+# %%
+
+Moda = dados['Anos de Estudo'].mode()[0]
+Moda
+
+# %%
+
+Mediana = dados['Anos de Estudo'].median()
+Mediana
+
+# %%
+
+Media = dados['Anos de Estudo'].mean()
+Media
+
+# %%
+
+# 4 MEDIDAS SEPARATRIZES
+
+# 4.1 Quartis, decis e percentis
+
+dados.Renda.quantile([0.25, 0.5, 0.75])
+
+# %%
+
+[i/10 for i in range(1, 10)]
+
+# %%
+
+dados.Renda.quantile([i/10 for i in range(1, 10)])
+
+# %%
+
+dados.Renda.quantile([i/100 for i in range(1, 100)])
+
+# %%
+
+ax = sns.distplot(dados.Idade,
+                  hist_kws = {'cumulative': True},
+                  kde_kws = {'cumulative': True})
+ax.figure.set_size_inches(14, 6)
+ax.set_title('Distribuição de Frequências Acumulada', fontsize=18)
+ax.set_ylabel('Acumulado', fontsize=14)
+ax.set_xlabel('Anos', fontsize=14)
+ax
+
+# %%
+
+dados.Idade.quantile([i/10 for i in range(1, 10)])
+
+# %%
+
+# 4.2 Box-plot
+
+ax = sns.boxplot( x = 'Altura', data = dados, orient = 'h')
+ax.figure.set_size_inches(12, 4)
+ax.set_title('Altura', fontsize=18)
+ax.set_xlabel('Metros', fontsize=14)
+ax
+
+# %%
+
+ax = sns.boxplot( x = 'Altura', y = 'Sexo', data = dados, orient = 'h')
+ax.figure.set_size_inches(12, 4)
+ax.set_title('Altura', fontsize=18)
+ax.set_xlabel('Metros', fontsize=14)
+ax
+
+# %%
+
+ax = sns.boxplot( x = 'Renda', data = dados, orient = 'h')
+ax.figure.set_size_inches(12, 4)
+ax.set_title('Renda', fontsize=18)
+ax.set_xlabel('R$', fontsize=14)
+ax
+
+# %%
+
+ax = sns.boxplot( x = 'Renda', data = dados.query('Renda < 10000'), orient = 'h')
+ax.figure.set_size_inches(12, 4)
+ax.set_title('Renda', fontsize=18)
+ax.set_xlabel('R$', fontsize=14)
+ax
+
+# %%
+
+ax = sns.boxplot( x = 'Renda', y = 'Sexo', data = dados.query('Renda < 10000'), orient = 'h')
+ax.figure.set_size_inches(12, 4)
+ax.set_title('Renda', fontsize=18)
+ax.set_xlabel('R$', fontsize=14)
+ax
+
+# %%
+
+ax = sns.boxplot( x = 'Anos de Estudo', data = dados, orient = 'h')
+ax.figure.set_size_inches(12, 4)
+ax.set_title('Anos de Estudo', fontsize=18)
+ax.set_xlabel('Anos', fontsize=14)
+ax
+
+# %%
+
+ax = sns.boxplot( x = 'Anos de Estudo', y = 'Sexo', data = dados, orient = 'h')
+ax.figure.set_size_inches(12, 4)
+ax.set_title('Anos de Estudo', fontsize=18)
+ax.set_xlabel('Anos', fontsize=14)
+ax
+
+# %%
+
+# 5 MEDIDAS DE DISPERSÃO
+
+# 5.1 Desvio médio absoluto
+
+df
+
+# %%
+
+notas_fulano = df[['Fulano']]
+notas_fulano
+
+# %%
+
+nota_media_fulano = notas_fulano.mean()[0]
+nota_media_fulano
+
+# %%
+
+notas_fulano['Desvio'] = notas_fulano['Fulano'] - nota_media_fulano
+notas_fulano
+
+# %%
+
+notas_fulano['|Desvio|'] = notas_fulano['Desvio'].abs()
+notas_fulano
+
+# %%
+
+ax = notas_fulano['Fulano'].plot(style = 'o')
+ax.figure.set_size_inches(14, 6)
+ax.hlines(y = nota_media_fulano, xmin = 0, xmax = notas_fulano.shape[0] - 1, colors = 'red')
+for i in range(notas_fulano.shape[0]):
+    ax.vlines(x = i, ymin = nota_media_fulano, ymax = notas_fulano['Fulano'][i], linestyle='dashed')
+ax
+
+# %%
+
+notas_fulano['|Desvio|'].mean()
+
+# %%
+
+desvio_medio_absoluto = notas_fulano['Fulano'].mad()
+desvio_medio_absoluto
+
+# %%
+
+# 5.2 Variância
+
+notas_fulano['(Desvio)^2'] = notas_fulano['Desvio'].pow(2)
+notas_fulano
+
+# %%
+
+notas_fulano['(Desvio)^2'].sum() / (len(notas_fulano) - 1)
+
+# %%
+
+variancia = notas_fulano['Fulano'].var()
+variancia 
+
+# %%
+
+# 5.3 Desvio padrão
+
+np.sqrt(variancia)
+
+# %%
+
+desvio_padrao = notas_fulano['Fulano'].std()
+desvio_padrao
+
+# %%
+
+df.mean()
+
+# %%
+
+df.std()
+
+# %%
 
