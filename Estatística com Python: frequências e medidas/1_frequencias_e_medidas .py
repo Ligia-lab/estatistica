@@ -9,7 +9,7 @@ import scipy
 
 #CONHECENDO OS DADOS
 
-dados = pd.read_csv('Curso de Estatística/dados.csv')
+dados = pd.read_csv('/home/ligia/Documents/ALURA/Engenharia/estatistica/Estatística com Python: frequências e medidas/Curso de Estatística 1/dados.csv')
 dados.head()
 
 # %%
@@ -653,6 +653,4 @@ df.mean()
 # %%
 
 df.std()
-
-# %%
 
