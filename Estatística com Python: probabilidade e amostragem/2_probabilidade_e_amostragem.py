@@ -6,6 +6,7 @@ import seaborn as sns
 from scipy.special import comb
 from scipy.stats import binom
 from scipy.stats import poisson
+from scipy.stats import norm
 
 # %%
 
@@ -152,4 +153,65 @@ probabilidade
 probabilidade = poisson.pmf(k, media)
 probabilidade
 # %%
+
+# 2.3 Distribuição Normal
+
+# Em um estudo sobre as alturas dos moradores de uma cidade verificou-se que o conjunto de dados segue uma **distribuição aproximadamente normal**, com **média 1,70** e **desvio padrão de 0,1**. 
+# Com estas informações obtenha o seguinte conjunto de probabilidades:
+# **A.** probabilidade de uma pessoa, selecionada ao acaso, ter menos de 1,80 metros.
+# **B.** probabilidade de uma pessoa, selecionada ao acaso, ter entre 1,60 metros e 1,80 metros.    
+# **C.** probabilidade de uma pessoa, selecionada ao acaso, ter mais de 1,90 metros.
+
+tabela_normal_padronizada = pd.DataFrame(
+    [], 
+    index=["{0:0.2f}".format(i / 100) for i in range(0, 400, 10)],
+    columns = ["{0:0.2f}".format(i / 100) for i in range(0, 10)])
+
+for index in tabela_normal_padronizada.index:
+    for column in tabela_normal_padronizada.columns:
+        Z = np.round(float(index) + float(column), 2)
+        tabela_normal_padronizada.loc[index, column] = "{0:0.4f}".format(norm.cdf(Z))
+
+tabela_normal_padronizada.rename_axis('Z', axis = 'columns', inplace = True)
+
+tabela_normal_padronizada
+# %%
+
+# **A.** probabilidade de uma pessoa, selecionada ao acaso, ter menos de 1,80 metros.
+
+media = 1.7
+desvio_padrao = 0.1
+Z = (1.8 - media) / desvio_padrao
+
+probabilidade = 0.8413  #usando a tabela
+
+norm.cdf(Z)
+# %%
+
+# **B.** probabilidade de uma pessoa, selecionada ao acaso, ter entre 1,60 metros e 1,80 metros.    
+
+Z_superior = (1.8 - media) / desvio_padrao
+Z_inferior = (1.6 - media) / desvio_padrao
+
+probabilidade = (0.8413 - 0.5) * 2
+
+probabilidade = norm.cdf(Z_superior) - (1 - norm.cdf(Z_superior))
+probabilidade
+# %%
+
+# **C.** probabilidade de uma pessoa, selecionada ao acaso, ter mais de 1,90 metros.
+
+Z = (1.9 - media) / desvio_padrao
+
+probabilidade = 1 - 0.9767
+
+probabilidade = 1 - norm.cdf(Z)
+probabilidade
+# %%
+
+# 3 - AMOSTRAGEM
+
+# 3.1 População e Amostra
+
+
 
